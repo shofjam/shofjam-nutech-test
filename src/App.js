@@ -1,20 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './App.css';
 import data from './data';
 
-import { Container, InputGroup, Row, Col, Card, Form, Button, Modal, Table, Image, Fade, Alert } from 'react-bootstrap';
-import { BsSearch, BsFillFileEarmarkPlusFill, BsPencilFill, BsFillTrashFill } from "react-icons/bs";
+import { Container, InputGroup, Row, Col, Card, Form, Button, Modal, Table, Image, Fade, Alert, Pagination, ToastContainer, Toast } from 'react-bootstrap';
+import { BsSearch, BsFillFileEarmarkPlusFill, BsPencilFill, BsFillTrashFill, BsUpload } from "react-icons/bs";
 
 function App() {
-  var [items, setItems] = useState(data.items);
-  var [filteredItems, setFilteredItems] = useState(data.items);
-  var [showFormModal, setShowFormModal] = useState(false);
-  var [selectedItem, setSelectedItem] = useState({});
-  var [initItemName, setInitItemName] = useState('');
-  var [isInputItemNameValid, setIsInputItemNameValid] = useState(true);
-  var [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
-  var [isUploadFileSizeValid, setIsUploadFileSizeValid] = useState(true);
-  var [inputSearch, setInputSearch] = useState('');
+  const [items, setItems] = useState(data.items);
+  const [filteredItems, setFilteredItems] = useState(data.items);
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+  const [initItemName, setInitItemName] = useState('');
+  const [isInputItemNameValid, setIsInputItemNameValid] = useState(true);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
+  const inputFile = useRef(null);
+  const [isUploadFileSizeValid, setIsUploadFileSizeValid] = useState(true);
+  const [inputSearch, setInputSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [toastState, setToastState] = useState({ show: false });
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+  const totalItems = filteredItems.length;
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   const onFormModalHide = () => {
     setShowFormModal(false);
@@ -40,6 +57,14 @@ function App() {
 
   return (
     <div className="App">
+      <ToastContainer className="p-3" position="top-end">
+        <Toast show={toastState.show} delay={3000} bg={toastState.variant} autohide onClose={() => setToastState({ show: false })}>
+          <Toast.Header closeButton={false}>
+            <strong>{toastState.title}</strong>
+          </Toast.Header>
+          <Toast.Body className={toastState.variant === "success" ? "text-white" : "text-black"}>{toastState.message}</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <Container>
         <Card className="mt-5">
           <Card.Header><h3>Data Barang</h3></Card.Header>
@@ -77,7 +102,7 @@ function App() {
               </thead>
               <tbody>
                 {
-                  filteredItems.map((item, idx) => {
+                  currentItems.map((item, idx) => {
                     return (
                       <tr key={'tableRow-' + idx}>
                         <td className="text-start">{item.name}</td>
@@ -110,6 +135,17 @@ function App() {
                 }
               </tbody>
             </Table>
+            <Pagination className="float-end">
+              {pageNumbers.map((number) => (
+                <Pagination.Item
+                  key={number}
+                  active={number === currentPage}
+                  onClick={() => handlePagination(number)}
+                >
+                  {number}
+                </Pagination.Item>
+              ))}
+            </Pagination>
           </Card.Body>
         </Card>
       </Container>
@@ -160,8 +196,8 @@ function App() {
               }} />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="item-purchasePrice">Foto</Form.Label>
-              <Form.Control id="item-purchasePrice" type="file" accept='.jpg, .png' onChange={(e) => {
+              <Form.Label htmlFor="item-purchasePrice">Foto Barang</Form.Label>
+              <Form.Control type="file" accept='.jpg, .png' ref={inputFile} className="d-none" onChange={(e) => {
                 if (e.target && e.target.files) {
                   if (e.target.files[0].size <= (100 * 1024)) {
                     setIsUploadFileSizeValid(true);
@@ -178,12 +214,15 @@ function App() {
                   setIsUploadFileSizeValid(true);
                 }
               }} />
+              <div id="item-purchasePrice" >
+                <Button type="button" onClick={() => inputFile.current.click()} >Upload &nbsp; <BsUpload /></Button>
+              </div>
               <Form.Text muted>
                 Format foto barang yang diizinkan hanya JPG dan PNG, dan ukurannya maksimal 100KB
               </Form.Text>
             </Form.Group>
             <Fade in={!isUploadFileSizeValid}>
-              <Alert variant="danger" className={(!isUploadFileSizeValid ? "d-block" : "d-none") + " text-danger"}>
+              <Alert variant="danger" className={(!isUploadFileSizeValid ? "d-block" : "d-none") + " text-danger p-2"}>
                 Foto yang anda pilih ukurannya lebih dari 100KB
               </Alert>
             </Fade>
@@ -194,7 +233,16 @@ function App() {
           <Button variant="secondary" onClick={onFormModalHide}>
             Tutup
           </Button>
-          <Button variant="primary" onClick={() => setShowFormModal(false)}>
+          <Button variant="primary" onClick={() => {
+            setShowFormModal(false);
+
+            setToastState({
+              show: true,
+              title: "Information",
+              message: "Data berhasil disimpan.",
+              variant: "success"
+            })
+          }}>
             Simpan
           </Button>
         </Modal.Footer>
@@ -209,6 +257,12 @@ function App() {
         <Modal.Footer>
           <Button variant="danger" onClick={() => {
             setShowDeleteConfirmationModal(false);
+            setToastState({
+              show: true,
+              title: "Information",
+              message: "Data berhasil dihapus.",
+              variant: "success"
+            })
           }}>
             Ya
           </Button>
