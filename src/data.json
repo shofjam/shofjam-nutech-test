@@ -1,0 +1,108 @@
+{
+    "items": [
+      {
+        "id": 1,
+        "name": "Masker",
+        "purchasePrice": 2000,
+        "sellingPrice": 3000,
+        "stock": 30,
+        "imageUrl": "https://th.bing.com/th/id/R.66c28d62c0907bedab8d1fca91711fd3?rik=iKlPJKzyR391hg&riu=http%3a%2f%2fcdn.ecommercedns.uk%2ffiles%2f0%2f232520%2f5%2f9949365%2fp030blu.jpg&ehk=nvPIjx6Dha%2fUsaBsq1ozGWa39O5S2kni4HJNeupVJMY%3d&risl=&pid=ImgRaw&r=0"
+      },
+      {
+        "id": 2,
+        "name": "Biskuit Better",
+        "purchasePrice": 1700,
+        "sellingPrice": 2000,
+        "stock": 20,
+        "imageUrl": "https://s0.bukalapak.com/img/545803637/w-1000/Biskuit_Better_Vanila_Cream_Renceng.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Gelas Mug",
+        "purchasePrice": 15000,
+        "sellingPrice": 18000,
+        "stock": 5,
+        "imageUrl": "https://s0.bukalapak.com/img/58314857531/large/Gelas_Mug_Keramik_11oz_Putih_Polos_Non_Coating.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Buah Apel",
+        "purchasePrice": 3000,
+        "sellingPrice": 3500,
+        "stock": 20,
+        "imageUrl": "https://i0.wp.com/cupsealer.me/wp-content/uploads/2018/01/apel-washington.jpg"
+      },
+      {
+        "id": 5,
+        "name": "Kopi Kapal Api",
+        "purchasePrice": 1100,
+        "sellingPrice": 1500,
+        "stock": 40,
+        "imageUrl": "https://d3eva9tbzi8qkq.cloudfront.net/2020/01/22/872-1579664880.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Air Aqua Galon",
+        "purchasePrice": 18000,
+        "sellingPrice": 20000,
+        "stock": 5,
+        "imageUrl": "https://ecs7.tokopedia.net/img/cache/700/product-1/2020/5/10/8477693/8477693_7db2dccb-4226-493e-85ef-949a5d73d81f_700_700.jpg"
+      },
+      {
+        "id": 7,
+        "name": "Tissue Nice",
+        "purchasePrice": 32000,
+        "sellingPrice": 35000,
+        "stock": 10,
+        "imageUrl": "https://s3.bukalapak.com/img/8543634216/w-1000/Tissue_Nice_900Gr_900_Gr_Gosend_Only.jpg"
+      },
+      {
+        "id": 8,
+        "name": "Rinso Cair",
+        "purchasePrice": 24000,
+        "sellingPrice": 26000,
+        "stock": 10,
+        "imageUrl": "https://dxclnrbvyw82b.cloudfront.net/images/product/web/16/62/32/00/0/000000326216_01_800.jpg"
+      },
+      {
+        "id": 9,
+        "name": "Sabun Lifebuoy",
+        "purchasePrice": 10000,
+        "sellingPrice": 12000,
+        "stock": 15,
+        "imageUrl": ""
+      },
+      {
+        "id": 10,
+        "name": "Pepsodent",
+        "purchasePrice": 7000,
+        "sellingPrice": 7500,
+        "stock": 10,
+        "imageUrl": ""
+      },
+      {
+        "id": 11,
+        "name": "Kecap ABC",
+        "purchasePrice": 400,
+        "sellingPrice": 500,
+        "stock": 20,
+        "imageUrl": ""
+      },
+      {
+        "id": 12,
+        "name": "Teh Sariwangi",
+        "purchasePrice": 6500,
+        "sellingPrice": 7000,
+        "stock": 10,
+        "imageUrl": ""
+      },
+      {
+        "id": 13,
+        "name": "Tepung Bumbu Sasa",
+        "purchasePrice": 4700,
+        "sellingPrice": 5000,
+        "stock": 10,
+        "imageUrl": ""
+      }
+    ]
+  }
