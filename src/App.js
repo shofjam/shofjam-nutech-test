@@ -2,14 +2,15 @@ import React, { useState, useRef } from 'react';
 import './App.css';
 import data from './data';
 
-import { 
-  Container, 
-  InputGroup, 
-  Row, Col, Card, Form, 
-  Button, Modal, 
-  Table, Image, 
-  Fade, Alert, 
-  Pagination, ToastContainer, Toast } from 'react-bootstrap';
+import {
+  Container,
+  InputGroup,
+  Row, Col, Card, Form,
+  Button, Modal,
+  Table, Image,
+  Fade, Alert,
+  Pagination, ToastContainer, Toast
+} from 'react-bootstrap';
 import { BsSearch, BsFillFileEarmarkPlusFill, BsPencilFill, BsFillTrashFill, BsUpload } from "react-icons/bs";
 
 function App() {
@@ -77,7 +78,7 @@ function App() {
           <Card.Header><h3>Data Barang</h3></Card.Header>
           <Card.Body>
             <Row>
-              <Col className="text-start">
+              <Col xl={6} lg={6} md={12} sm={12} xs={12} className="text-start">
                 <InputGroup>
                   <Form.Control placeholder="Cari nama barang..." value={inputSearch} onInput={(e) => {
                     setInputSearch(e.target.value);
@@ -86,7 +87,7 @@ function App() {
                   <Button type="button" width={300}>Cari &nbsp; <BsSearch /></Button>
                 </InputGroup>
               </Col>
-              <Col className="text-end">
+              <Col xl={6} lg={6} md={12} sm={12} xs={12} className="text-end">
                 <Button variant="primary" onClick={() => {
                   setInitItemName('');
                   setIsUploadFileSizeValid(true);
