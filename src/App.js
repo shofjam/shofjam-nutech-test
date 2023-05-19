@@ -2,7 +2,11 @@ import React, { useState, useRef } from 'react';
 import './App.css';
 import data from './data';
 
-import { Container, InputGroup, Row, Col, Card, Form, Button, Modal, Table, Image, Fade, Alert, Pagination, ToastContainer, Toast } from 'react-bootstrap';
+import { 
+  Container, 
+  InputGroup, 
+  Row, Col, Card, Form, 
+  Button, Modal, Table, Image, Fade, Alert, Pagination, ToastContainer, Toast } from 'react-bootstrap';
 import { BsSearch, BsFillFileEarmarkPlusFill, BsPencilFill, BsFillTrashFill, BsUpload } from "react-icons/bs";
 
 function App() {
