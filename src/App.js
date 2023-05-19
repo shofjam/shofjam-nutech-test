@@ -8,7 +8,8 @@ import {
   Row, Col, Card, Form, 
   Button, Modal, 
   Table, Image, 
-  Fade, Alert, Pagination, ToastContainer, Toast } from 'react-bootstrap';
+  Fade, Alert, 
+  Pagination, ToastContainer, Toast } from 'react-bootstrap';
 import { BsSearch, BsFillFileEarmarkPlusFill, BsPencilFill, BsFillTrashFill, BsUpload } from "react-icons/bs";
 
 function App() {
