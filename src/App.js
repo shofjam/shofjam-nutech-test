@@ -78,7 +78,7 @@ function App() {
           <Card.Header><h3>Data Barang</h3></Card.Header>
           <Card.Body>
             <Row>
-              <Col xl={6} lg={6} md={12} sm={12} xs={12} className="text-start">
+              <Col xl={6} lg={6} md={12} sm={12} xs={12} className="mt-2 text-start">
                 <InputGroup>
                   <Form.Control placeholder="Cari nama barang..." value={inputSearch} onInput={(e) => {
                     setInputSearch(e.target.value);
@@ -87,7 +87,7 @@ function App() {
                   <Button type="button" width={300}>Cari &nbsp; <BsSearch /></Button>
                 </InputGroup>
               </Col>
-              <Col xl={6} lg={6} md={12} sm={12} xs={12} className="text-end">
+              <Col xl={6} lg={6} md={12} sm={12} xs={12} className="mt-2 text-end">
                 <Button variant="primary" onClick={() => {
                   setInitItemName('');
                   setIsUploadFileSizeValid(true);
@@ -114,9 +114,9 @@ function App() {
                     return (
                       <tr key={'tableRow-' + idx}>
                         <td className="text-start">{item.name}</td>
-                        <td>{item.purchasePrice}</td>
-                        <td>{item.sellingPrice}</td>
-                        <td>{item.stock}</td>
+                        <td>{item.purchasePrice.toLocaleString()}</td>
+                        <td>{item.sellingPrice.toLocaleString()}</td>
+                        <td>{item.stock.toLocaleString()}</td>
                         <td>
                           <div className='d-flex text-center'>
                             <Button variant="outline-primary" size="sm" onClick={() => {
