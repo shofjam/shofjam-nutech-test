@@ -6,7 +6,9 @@ import {
   Container, 
   InputGroup, 
   Row, Col, Card, Form, 
-  Button, Modal, Table, Image, Fade, Alert, Pagination, ToastContainer, Toast } from 'react-bootstrap';
+  Button, Modal, 
+  Table, Image, 
+  Fade, Alert, Pagination, ToastContainer, Toast } from 'react-bootstrap';
 import { BsSearch, BsFillFileEarmarkPlusFill, BsPencilFill, BsFillTrashFill, BsUpload } from "react-icons/bs";
 
 function App() {
