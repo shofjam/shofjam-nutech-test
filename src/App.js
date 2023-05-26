@@ -11,7 +11,7 @@ import {
   Fade, Alert,
   Pagination, ToastContainer, Toast
 } from 'react-bootstrap';
-import { BsSearch, BsFillFileEarmarkPlusFill, BsPencilFill, BsFillTrashFill, BsUpload } from "react-icons/bs";
+import { BsSearch, BsFillFileEarmarkPlusFill, BsPencilFill, BsFillTrashFill, BsUpload, BsArrowUp, BsArrowDown } from "react-icons/bs";
 
 function App() {
   const [items, setItems] = useState(data.items);
@@ -22,13 +22,33 @@ function App() {
   const [isInputItemNameValid, setIsInputItemNameValid] = useState(true);
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const inputFile = useRef(null);
+  const [isUploadFileTypeValid, setIsUploadFileTypeValid] = useState(true);
   const [isUploadFileSizeValid, setIsUploadFileSizeValid] = useState(true);
   const [inputSearch, setInputSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
   const [toastState, setToastState] = useState({ show: false });
   const handlePagination = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    const sortedData = [...filteredItems].sort((a, b) => {
+      if (a[key] < b[key]) {
+        return direction === 'asc' ? -1 : 1;
+      }
+      if (a[key] > b[key]) {
+        return direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+    setFilteredItems(sortedData);
+    setSortConfig({ key, direction });
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -47,15 +67,15 @@ function App() {
   }
   const validateItemName = (value) => {
     value = value.trim().toLowerCase();
-    if (items.find(x => x.name.trim().toLowerCase() == value)) {
+    if (items.find(x => x.name.trim().toLowerCase() === value)) {
       if (selectedItem) {
-        if (initItemName == value) {
+        if (initItemName === value) {
           setIsInputItemNameValid(true);
         }
         else
           setIsInputItemNameValid(false);
       }
-      else if (initItemName == value && selectedItem) {
+      else if (initItemName === value && selectedItem) {
         setIsInputItemNameValid(false);
       }
     }
@@ -91,6 +111,7 @@ function App() {
                 <Button variant="primary" onClick={() => {
                   setInitItemName('');
                   setIsUploadFileSizeValid(true);
+                  setIsUploadFileTypeValid(true);
                   setSelectedItem({});
                   setShowFormModal(true);
                 }}>
@@ -101,10 +122,22 @@ function App() {
             <Table striped>
               <thead>
                 <tr>
-                  <th>Nama Barang</th>
-                  <th>Harga Beli</th>
-                  <th>Harga Jual</th>
-                  <th>Stok</th>
+                  <th onClick={() => handleSort('name')} style={{ cursor: 'pointer' }}>
+                    Nama Barang {(sortConfig.key === 'name' ?
+                      sortConfig.direction === 'asc' ? <BsArrowUp /> : <BsArrowDown /> : null)}
+                  </th>
+                  <th onClick={() => handleSort('purchasePrice')} style={{ cursor: 'pointer' }}>
+                    Harga Beli {(sortConfig.key === 'purchasePrice' ?
+                      sortConfig.direction === 'asc' ? <BsArrowUp /> : <BsArrowDown /> : null)}
+                  </th>
+                  <th onClick={() => handleSort('sellingPrice')} style={{ cursor: 'pointer' }}>
+                    Harga Jual {(sortConfig.key === 'sellingPrice' ?
+                      sortConfig.direction === 'asc' ? <BsArrowUp /> : <BsArrowDown /> : null)}
+                  </th>
+                  <th onClick={() => handleSort('stock')} style={{ cursor: 'pointer' }}>
+                    Stok {(sortConfig.key === 'stock' ?
+                      sortConfig.direction === 'asc' ? <BsArrowUp /> : <BsArrowDown /> : null)}
+                  </th>
                   <th>#</th>
                 </tr>
               </thead>
@@ -121,7 +154,8 @@ function App() {
                           <div className='d-flex text-center'>
                             <Button variant="outline-primary" size="sm" onClick={() => {
                               setIsUploadFileSizeValid(true);
-                              var selected = items.find(x => x.id == item.id);
+                              setIsUploadFileTypeValid(true);
+                              var selected = items.find(x => x.id === item.id);
                               setInitItemName(selected.name.trim().toLowerCase());
                               setSelectedItem(selected);
                               setShowFormModal(true);
@@ -129,7 +163,7 @@ function App() {
                               <BsPencilFill />
                             </Button>
                             <Button variant="outline-danger" size="sm" className="ms-2" onClick={() => {
-                              var selected = items.find(x => x.id == item.id);
+                              var selected = items.find(x => x.id === item.id);
                               setSelectedItem(selected);
                               setShowDeleteConfirmationModal(true)
                             }}>
@@ -206,13 +240,12 @@ function App() {
             <Form.Group className="mb-3">
               <Form.Label htmlFor="item-purchasePrice">Foto Barang</Form.Label>
               <Form.Control type="file" accept='.jpg, .png' ref={inputFile} className="d-none" onChange={(e) => {
-                if (e.target && e.target.files) {
-                  if (e.target.files[0].size <= (100 * 1024)) {
+                var fileToUpload = e.target && e.target.files ? e.target.files[0] : null;
+                var isFileValid = false;
+                if (fileToUpload) {
+                  if (fileToUpload.size <= (100 * 1024)) {
                     setIsUploadFileSizeValid(true);
-                    setSelectedItem({
-                      ...selectedItem,
-                      imageUrl: URL.createObjectURL(e.target.files[0])
-                    });
+                    isFileValid = true;
                   }
                   else {
                     setIsUploadFileSizeValid(false);
@@ -220,6 +253,26 @@ function App() {
                 }
                 else {
                   setIsUploadFileSizeValid(true);
+                }
+
+                if (fileToUpload) {
+                  if (fileToUpload.type === "image/jpg" || fileToUpload.type === "image/png") {
+                    setIsUploadFileTypeValid(true);
+                    isFileValid = true;
+                  }
+                  else {
+                    setIsUploadFileTypeValid(false);
+                  }
+                }
+                else {
+                  setIsUploadFileTypeValid(true);
+                }
+
+                if (isFileValid) {
+                  setSelectedItem({
+                    ...selectedItem,
+                    imageUrl: URL.createObjectURL(fileToUpload)
+                  });
                 }
               }} />
               <div id="item-purchasePrice" >
@@ -232,6 +285,11 @@ function App() {
             <Fade in={!isUploadFileSizeValid}>
               <Alert variant="danger" className={(!isUploadFileSizeValid ? "d-block" : "d-none") + " text-danger p-2"}>
                 Foto yang anda pilih ukurannya lebih dari 100KB
+              </Alert>
+            </Fade>
+            <Fade in={!isUploadFileTypeValid}>
+              <Alert variant="danger" className={(!isUploadFileSizeValid ? "d-block" : "d-none") + " text-danger p-2"}>
+                Format foto barang yang diizinkan hanya JPG dan PNG
               </Alert>
             </Fade>
             {selectedItem.imageUrl ? <Image alt="preview image" src={selectedItem.imageUrl} rounded width={400} /> : null}
