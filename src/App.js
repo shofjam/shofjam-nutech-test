@@ -4,7 +4,7 @@ import data from './data';
 
 import {
   Container,
-  InputGroup,
+  InputGroup, DropdownButton, Dropdown,
   Row, Col, Card, Form,
   Button, Modal,
   Table, Image,
@@ -26,7 +26,9 @@ function App() {
   const [isUploadFileSizeValid, setIsUploadFileSizeValid] = useState(true);
   const [inputSearch, setInputSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  const itemsPerPageSelection = [5, 10, 15, 20];
+  const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageSelection[1]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
   const [toastState, setToastState] = useState({ show: false });
   const handlePagination = (pageNumber) => {
@@ -100,11 +102,12 @@ function App() {
             <Row>
               <Col xl={6} lg={6} md={12} sm={12} xs={12} className="mt-2 text-start">
                 <InputGroup>
+                  <span className="input-group-text bg-transparent"><BsSearch /></span>
                   <Form.Control placeholder="Cari nama barang..." value={inputSearch} onInput={(e) => {
                     setInputSearch(e.target.value);
+                    setCurrentPage(1);
                     setFilteredItems(items.filter(x => x.name.toLowerCase().includes(e.target.value.toLowerCase())));
                   }} />
-                  <Button type="button" width={300}>Cari &nbsp; <BsSearch /></Button>
                 </InputGroup>
               </Col>
               <Col xl={6} lg={6} md={12} sm={12} xs={12} className="mt-2 text-end">
@@ -187,6 +190,16 @@ function App() {
                   {number}
                 </Pagination.Item>
               ))}
+              <Dropdown>
+                <Dropdown.Toggle variant="light" className="ms-1">
+                  {itemsPerPage}
+                </Dropdown.Toggle>
+                <Dropdown.Menu style={{ minWidth: "inherit" }} as="div" >
+                  {itemsPerPageSelection.map((x, idx) => (
+                    <Dropdown.Item key={"page-select-" + idx} value={x} active={x === itemsPerPage} onClick={(e) => setItemsPerPage(Number(e.target.text))}>{x}</Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             </Pagination>
           </Card.Body>
         </Card>
